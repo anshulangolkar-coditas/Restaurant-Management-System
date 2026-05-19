@@ -26,7 +26,9 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable());
 
         http.authorizeHttpRequests(auth ->
-                auth.anyRequest().permitAll()
+                auth.requestMatchers("/growtogether/v1/invitation").hasRole("ADMIN")
+                .requestMatchers("/growtogether/v1/restaurant/**").hasAnyRole("ADMIN", "OWNER")
+                        .anyRequest().permitAll()
                 );
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

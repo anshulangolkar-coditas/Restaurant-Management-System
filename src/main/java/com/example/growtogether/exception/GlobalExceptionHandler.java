@@ -166,6 +166,68 @@ public class GlobalExceptionHandler {
     }
 
 
+    @ExceptionHandler(EmailSendingFailureException.class)
+    public ResponseEntity<ErrorResponse> EmailSendingFailureException(EmailSendingFailureException ex){
 
+        ErrorResponse errorResponse = new ErrorResponse();
+
+        errorResponse.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        errorResponse.setDateTime(LocalDateTime.now());
+        errorResponse.setMessage(ex.getMessage());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
+    @ExceptionHandler(InvitationStillValidException.class)
+    public ResponseEntity<ErrorResponse> invitationStillValidException(InvitationStillValidException ex){
+
+        ErrorResponse errorResponse = new ErrorResponse();
+
+        errorResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        errorResponse.setDateTime(LocalDateTime.now());
+        errorResponse.setMessage(ex.getMessage());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ExceptionHandler(InvitationExpiredException.class)
+    public ResponseEntity<ErrorResponse> invitationExpiredException(InvitationExpiredException ex){
+
+        ErrorResponse errorResponse = new ErrorResponse();
+
+        errorResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        errorResponse.setDateTime(LocalDateTime.now());
+        errorResponse.setMessage(ex.getMessage());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ExceptionHandler(RestaurantNotFoundException.class)
+    public ResponseEntity<ErrorResponse> restaurantNotFoundException(RestaurantNotFoundException ex){
+
+        ErrorResponse errorResponse = new ErrorResponse();
+
+        errorResponse.setStatusCode(HttpStatus.NOT_FOUND.value());
+        errorResponse.setDateTime(LocalDateTime.now());
+        errorResponse.setMessage(ex.getMessage());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+
+    @ExceptionHandler(RestaurantBranchesExistsException.class)
+    public ResponseEntity<ErrorResponse> restaurantBranchesExistsException(RestaurantBranchesExistsException ex){
+
+        ErrorResponse errorResponse = new ErrorResponse();
+
+        errorResponse.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        errorResponse.setDateTime(LocalDateTime.now());
+        errorResponse.setMessage(ex.getMessage());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
 
 }

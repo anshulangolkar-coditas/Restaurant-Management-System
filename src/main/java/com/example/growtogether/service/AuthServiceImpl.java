@@ -1,7 +1,9 @@
 package com.example.growtogether.service;
 
 import com.example.growtogether.constants.ExceptionMessages;
+import com.example.growtogether.dto.auth.request.RegenerateAccessTokenDto;
 import com.example.growtogether.dto.auth.request.UserLoginRequestDto;
+import com.example.growtogether.dto.auth.response.RegenerateAccessTokenResponse;
 import com.example.growtogether.dto.auth.response.UserLoginResponseDto;
 import com.example.growtogether.dtomapping.auth.AuthMapping;
 import com.example.growtogether.entity.RefreshToken;
@@ -52,20 +54,21 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    public String regenerateAccessToken(String refreshToken, Long userId) {
+    public RegenerateAccessTokenResponse regenerateAccessToken(RegenerateAccessTokenDto refreshToken) {
 
         String accessToken = null;
 
-        RefreshToken token = refreshTokenRepository.findByToken(refreshToken)
+        String refresh = authMapping.toRefreshToken(refreshToken);
+
+        RefreshToken token = refreshTokenRepository.findByToken(refresh)
                 .orElseThrow(() -> new RefreshTokenNotValidException(ExceptionMessages.REFRESH_TOKEN_NOT_VALID));
 
-        Users user = usersRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(ExceptionMessages.USER_NOT_FOUND));
+        Users user = token.getUser();
 
         if(jwtUtil.isRefreshTokenValid(token)){
             accessToken = jwtUtil.generateToken(user.getEmailId());
         }
-        return accessToken;
+        return authMapping.responseRefreshToken(accessToken,token.getToken());
     }
 
 

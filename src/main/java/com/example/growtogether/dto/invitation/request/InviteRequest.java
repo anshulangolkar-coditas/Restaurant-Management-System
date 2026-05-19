@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class OwnerInviteRequest {
+public class InviteRequest {
 
     @NotBlank
     private String fullName;
@@ -20,7 +20,5 @@ public class OwnerInviteRequest {
 
     @NotBlank
     private String role;
-
-
 
 }

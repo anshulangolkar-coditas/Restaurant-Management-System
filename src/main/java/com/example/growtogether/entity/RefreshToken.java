@@ -21,12 +21,14 @@ public class RefreshToken {
     private String token;
 
     @Column(nullable = false, updatable = false)
+    @Builder.Default
     private Date createdAt = new Date();
 
     @Column(nullable = false, updatable = false)
     private Date expiresAt;
 
     @Column(nullable = false)
+    @Builder.Default
     private Boolean blackListed = false;
 
     @ManyToOne

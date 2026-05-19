@@ -23,7 +23,6 @@ public class Manager {
     @JoinColumn(name = "branch_id", nullable = false)
     private RestaurantBranch branch;
 
-    @Column(nullable = false)
     private Double salary;
 
 }

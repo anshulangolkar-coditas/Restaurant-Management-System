@@ -12,6 +12,12 @@ public interface ExceptionMessages {
     String INVALID_RESTAURANT_TYPE = "Restaurant Category Incorrect";
     String INVALID_ROLE = "Role Name Not Valid";
     String INVALID_TABLE_SESSION_STATUS = "Table session status invalid";
+    String EMAIL_SENDING_FAILURE = "Failed To Send Email";
+    String INVITATION_VALID = "Invitation Still Valid";
+    String INVITATION_ACCEPTED = "Invitation Already Accepted";
+    String INVITATION_EXPIRED = "Invitation Expired";
+    String RESTAURANT_NOT_FOUND = "No Restaurant Found";
+    String RESTAURANT_BRANCH_EXISTS = "Branches Of Restaurant Exits, First delete all the branches to delete the restaurant";
 
 
 

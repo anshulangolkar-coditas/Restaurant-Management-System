@@ -1,6 +1,5 @@
 package com.example.growtogether.constants;
 
-import com.example.growtogether.exception.InvalidFoodTypeException;
 import com.example.growtogether.exception.InvalidInvitationStatusException;
 
 public enum InvitationStatus {

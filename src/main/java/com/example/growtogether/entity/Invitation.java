@@ -29,14 +29,20 @@ public class Invitation {
     @Column(nullable = false)
     private Role role;
 
+    @Column(updatable = false)
+    private String uniqueKey;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @Builder.Default
     private InvitationStatus status = InvitationStatus.PENDING;
 
     @Column(updatable = false, nullable = false)
+    @Builder.Default
     private final Date sentOn = new Date();
 
     @Column(updatable = false, nullable = false)
+    @Builder.Default
     private final Date expiresOn = new Date(System.currentTimeMillis() + 1000L * 60L * 10L);
 
     @ManyToOne(fetch = FetchType.LAZY)

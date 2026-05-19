@@ -1,6 +1,8 @@
 package com.example.growtogether.controller;
 
+import com.example.growtogether.dto.auth.request.RegenerateAccessTokenDto;
 import com.example.growtogether.dto.auth.request.UserLoginRequestDto;
+import com.example.growtogether.dto.auth.response.RegenerateAccessTokenResponse;
 import com.example.growtogether.dto.auth.response.UserLoginResponseDto;
 import com.example.growtogether.entity.Users;
 import com.example.growtogether.response.ApplicationResponse;
@@ -34,11 +36,11 @@ public class AuthController {
     }
 
     @GetMapping("/refresh")
-    public ResponseEntity<ApplicationResponse<String>> regenerateAccessToken(@RequestBody String refreshToken, @AuthenticationPrincipal Users user){
+    public ResponseEntity<ApplicationResponse<RegenerateAccessTokenResponse>> regenerateAccessToken(@Valid @RequestBody RegenerateAccessTokenDto refreshToken){
 
-        String token = authService.regenerateAccessToken(refreshToken, user.getUserId());
+        RegenerateAccessTokenResponse token = authService.regenerateAccessToken(refreshToken);
 
-        ApplicationResponse<String> response = new ApplicationResponse<>(
+        ApplicationResponse<RegenerateAccessTokenResponse> response = new ApplicationResponse<>(
                 HttpStatus.OK.value(),
                 "Access Token Generated Successfully",
                 token

@@ -30,7 +30,6 @@ public class Staff {
     @Column(nullable = false)
     private Role role;
 
-    @Column(nullable = false)
     private Double salary;
 
     @OneToMany(mappedBy = "staff")
