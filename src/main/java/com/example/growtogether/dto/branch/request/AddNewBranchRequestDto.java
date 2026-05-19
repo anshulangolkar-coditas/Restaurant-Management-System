@@ -26,7 +26,7 @@ public class AddNewBranchRequestDto {
     private Long number;
 
     @NotNull
-    private Long numberOfTables;
+    private Integer numberOfTables;
 
 
 }

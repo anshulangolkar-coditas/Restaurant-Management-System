@@ -18,6 +18,8 @@ public interface ExceptionMessages {
     String INVITATION_EXPIRED = "Invitation Expired";
     String RESTAURANT_NOT_FOUND = "No Restaurant Found";
     String RESTAURANT_BRANCH_EXISTS = "Branches Of Restaurant Exits, First delete all the branches to delete the restaurant";
+    String INVITATION_NOT_FOUND = "No Invitation Found";
+
 
 
 
