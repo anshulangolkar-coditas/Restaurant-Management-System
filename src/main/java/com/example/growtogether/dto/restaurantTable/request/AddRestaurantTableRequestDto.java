@@ -1,6 +1,7 @@
-package com.example.growtogether.dto.invitation.request;
+package com.example.growtogether.dto.restaurantTable.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,17 +11,13 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class InviteRequest {
+public class AddRestaurantTableRequestDto {
 
     @NotBlank
-    private String fullName;
+    private String tableName;
 
-    @NotBlank
-    private String email;
-
-    @NotBlank
-    private String role;
-
+    @NotNull
     private Long branchId;
+
 
 }

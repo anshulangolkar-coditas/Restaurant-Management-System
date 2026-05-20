@@ -42,6 +42,7 @@ public class AuthServiceImpl implements AuthService{
     private final OwnerRepository ownerRepository;
     private final ManagerRepository managerRepository;
     private final StaffRepository staffRepository;
+    private final RestaurantBranchRepository restaurantBranchRepository;
 
     @Override
     public UserLoginResponseDto login(UserLoginRequestDto request) {
@@ -125,8 +126,14 @@ public class AuthServiceImpl implements AuthService{
 
             Users savedManager = usersRepository.save(manager);
 
+            RestaurantBranch branch = restaurantBranchRepository.findById(invitation.getBranchId())
+                    .orElseThrow(()-> new RestaurantNotFoundException(ExceptionMessages.RESTAURANT_BRANCH_NOT_FOUND));
+
             Manager manager1 = new Manager();
             manager1.setUser(savedManager);
+            manager1.setBranch(branch);
+
+            managerRepository.save(manager1);
 
             invitation.setStatus(InvitationStatus.ACCEPTED);
             invitationRepository.save(invitation);
@@ -140,8 +147,15 @@ public class AuthServiceImpl implements AuthService{
 
             Users savedWaiterStaff = usersRepository.save(staff);
 
+            RestaurantBranch branch = restaurantBranchRepository.findById(invitation.getBranchId())
+                    .orElseThrow(()-> new RestaurantNotFoundException(ExceptionMessages.RESTAURANT_BRANCH_NOT_FOUND));
+
             Staff staff1 = new Staff();
             staff1.setUser(savedWaiterStaff);
+            staff1.setBranch(branch);
+            staff1.setRole(Role.STAFF_WAITER);
+
+            staffRepository.save(staff1);
 
             invitation.setStatus(InvitationStatus.ACCEPTED);
             invitationRepository.save(invitation);
@@ -157,6 +171,9 @@ public class AuthServiceImpl implements AuthService{
 
             Staff staff1 = new Staff();
             staff1.setUser(savedWaiterStaff);
+            staff1.setRole(Role.STAFF_KITCHEN);
+
+            staffRepository.save(staff1);
 
             invitation.setStatus(InvitationStatus.ACCEPTED);
             invitationRepository.save(invitation);

@@ -26,6 +26,7 @@ public class RestaurantTable {
     private String tableName;
 
     @Column(nullable = false, updatable = false)
+    @Builder.Default
     private Date assignedAt = new Date();
 
     private Date finishedAt;

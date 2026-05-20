@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/restaurant")
 @RequiredArgsConstructor
@@ -45,6 +47,22 @@ public class RestaurantController {
         );
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @GetMapping("/")
+    public ResponseEntity<ApplicationResponse<List<AddRestaurantResponseDto>>> getAllRestaurants(@RequestParam int page, @AuthenticationPrincipal Users user){
+
+        List<AddRestaurantResponseDto> restaurantList = restaurantService.getAllRestaurants(page, user);
+
+        ApplicationResponse<List<AddRestaurantResponseDto>> response = new ApplicationResponse<>(
+                HttpStatus.OK.value(),
+                "Retrieved All Restaurants Successfully",
+                restaurantList
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
 
 
 }

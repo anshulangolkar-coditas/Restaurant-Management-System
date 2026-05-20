@@ -1,13 +1,16 @@
 package com.example.growtogether.exception;
 
 import com.example.growtogether.response.ErrorResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -240,6 +243,33 @@ public class GlobalExceptionHandler {
         errorResponse.setMessage(ex.getMessage());
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> methodArgumentNotValidException(MethodArgumentNotValidException ex, HttpServletRequest request){
+
+        ErrorResponse error = new ErrorResponse();
+
+        error.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        error.setMessage(Objects.requireNonNull(ex.getBindingResult().getFieldError()).getDefaultMessage());
+        error.setDateTime(LocalDateTime.now());
+
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+
+    }
+
+
+    @ExceptionHandler(RestaurantBranchNotFoundException.class)
+    public ResponseEntity<ErrorResponse> restaurantBranchNotFoundException(RestaurantBranchNotFoundException ex, HttpServletRequest request){
+
+        ErrorResponse error = new ErrorResponse();
+
+        error.setStatusCode(HttpStatus.NOT_FOUND.value());
+        error.setDateTime(LocalDateTime.now());
+        error.setMessage(ex.getMessage());
+
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+
     }
 
 }

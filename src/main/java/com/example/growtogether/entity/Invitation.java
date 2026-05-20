@@ -32,6 +32,8 @@ public class Invitation {
     @Column(updatable = false)
     private String uniqueKey;
 
+    private Long branchId;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Builder.Default

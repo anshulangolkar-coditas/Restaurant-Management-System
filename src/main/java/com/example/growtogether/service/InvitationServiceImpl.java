@@ -7,7 +7,6 @@ import com.example.growtogether.dto.invitation.request.InviteRequest;
 import com.example.growtogether.dto.invitation.response.InviteResponseDto;
 import com.example.growtogether.dtomapping.invitation.InvitationMapping;
 import com.example.growtogether.entity.Invitation;
-import com.example.growtogether.entity.Owner;
 import com.example.growtogether.entity.Users;
 import com.example.growtogether.exception.InvitationAlreadyAcceptedException;
 import com.example.growtogether.exception.InvitationExpiredException;
@@ -16,11 +15,15 @@ import com.example.growtogether.repository.InvitationRepository;
 import com.example.growtogether.repository.OwnerRepository;
 import com.example.growtogether.repository.StaffRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 @Service
 @Transactional
@@ -50,6 +53,10 @@ public class InvitationServiceImpl implements InvitationService{
             }
         }
 
+        if(!request.getRole().equalsIgnoreCase("OWNER") && request.getBranchId() == null){
+            throw new RuntimeException("Branch ID required to send invite");
+        }
+
 
         String uniqueKey = emailService.sendInvitation(request.getEmail());
 
@@ -58,6 +65,7 @@ public class InvitationServiceImpl implements InvitationService{
                 .fullName(request.getFullName())
                 .role(Role.toValue(request.getRole()))
                 .uniqueKey(uniqueKey)
+                .branchId(request.getBranchId())
                 .sentBy(user)
                 .build();
 
@@ -65,5 +73,15 @@ public class InvitationServiceImpl implements InvitationService{
 
         return invitationMapping.invitationResponseDto(savedInvitation);
 
+    }
+
+    @Override
+    public List<InviteResponseDto> getAllInvitations(int page) {
+
+        Pageable pageable = PageRequest.of(page, 8);
+
+        Page<Invitation> pageList = invitationRepository.findAll(pageable);
+
+        return invitationMapping.invitationResponseDto(pageList);
     }
 }
