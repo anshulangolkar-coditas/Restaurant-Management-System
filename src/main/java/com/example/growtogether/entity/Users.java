@@ -45,6 +45,7 @@ public class Users implements UserDetails {
     @Column(nullable = false)
     private LocalDate joinedDate;
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return role.stream().map(r -> new SimpleGrantedAuthority("ROLE_"+r.name())).toList();

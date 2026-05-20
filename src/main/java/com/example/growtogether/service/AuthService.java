@@ -6,6 +6,7 @@ import com.example.growtogether.dto.auth.request.UserLoginRequestDto;
 import com.example.growtogether.dto.auth.response.RegenerateAccessTokenResponse;
 import com.example.growtogether.dto.auth.response.RegisterUserResponseDto;
 import com.example.growtogether.dto.auth.response.UserLoginResponseDto;
+import com.example.growtogether.entity.Users;
 import jakarta.validation.Valid;
 
 public interface AuthService {
@@ -14,4 +15,6 @@ public interface AuthService {
     RegenerateAccessTokenResponse regenerateAccessToken(RegenerateAccessTokenDto refreshToken);
 
     RegisterUserResponseDto registerUser(@Valid RegisterUserRequestDto request);
+
+    String logoutUser(RegenerateAccessTokenDto refreshToken, Users user);
 }

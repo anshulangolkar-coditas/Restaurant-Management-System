@@ -272,4 +272,17 @@ public class GlobalExceptionHandler {
 
     }
 
+    @ExceptionHandler(BranchTableNotFoundException.class)
+    public ResponseEntity<ErrorResponse> branchTableNotFoundException(BranchTableNotFoundException ex, HttpServletRequest request){
+
+        ErrorResponse error = new ErrorResponse();
+
+        error.setStatusCode(HttpStatus.NOT_FOUND.value());
+        error.setDateTime(LocalDateTime.now());
+        error.setMessage(ex.getMessage());
+
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+
+    }
+
 }

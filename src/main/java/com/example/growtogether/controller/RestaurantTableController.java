@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +25,7 @@ public class RestaurantTableController {
 
     private final RestaurantTableService restaurantTableService;
 
+    @PreAuthorize("hasAnyRole('ADMIN','OWNER','MANAGER')")
     @PostMapping("/")
     public ResponseEntity<ApplicationResponse<AddTableResponseDto>> addTable(@Valid @RequestBody AddRestaurantTableRequestDto request, @AuthenticationPrincipal Users user){
 
@@ -37,8 +39,9 @@ public class RestaurantTableController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','OWNER','MANAGER')")
     @PostMapping("/assign-staf-table")
-    public ResponseEntity<ApplicationResponse<AssignStaffToTableResponseDto>> assignStaffToTable(@Valid AssignStaffToTableRequestDto request, @AuthenticationPrincipal Users user){
+    public ResponseEntity<ApplicationResponse<AssignStaffToTableResponseDto>> assignStaffToTable(@Valid @RequestBody AssignStaffToTableRequestDto request, @AuthenticationPrincipal Users user){
 
         AssignStaffToTableResponseDto details = restaurantTableService.assignStaffToTable(request, user);
 
@@ -49,5 +52,7 @@ public class RestaurantTableController {
         );
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
+
 
 }

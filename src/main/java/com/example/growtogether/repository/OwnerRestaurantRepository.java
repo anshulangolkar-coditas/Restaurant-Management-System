@@ -9,4 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OwnerRestaurantRepository extends JpaRepository<OwnerRestaurant, Long> {
     OwnerRestaurant findByOwnerAndRestaurant(Owner owner, Restaurant restaurant);
+
+    boolean existsByOwnerAndRestaurant(Owner owner, Restaurant restaurant);
+
 }

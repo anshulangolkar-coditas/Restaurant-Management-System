@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,7 @@ public class BranchController {
 
     private final BranchService branchService;
 
+    @PreAuthorize("hasAnyRole('ADMIN','OWNER','MANAGER')")
     @PostMapping("/")
     public ResponseEntity<ApplicationResponse<AddNewBranchResponseDto>> addBranch(@Valid @RequestBody AddNewBranchRequestDto request, @AuthenticationPrincipal Users user) {
 
@@ -39,6 +41,7 @@ public class BranchController {
     }
 
     @GetMapping("/")
+    @PreAuthorize("hasAnyRole('ADMIN','OWNER')")
     public ResponseEntity<ApplicationResponse<List<AddNewBranchResponseDto>>> getAllBranches(@RequestParam Long restaurantId, @RequestParam int page, @AuthenticationPrincipal Users user) {
 
         List<AddNewBranchResponseDto> branchList = branchService.getAllBranches(restaurantId, page, user);
@@ -52,6 +55,7 @@ public class BranchController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','OWNER','MANAGER')")
     @PatchMapping("/update-staff-salary")
     public ResponseEntity<ApplicationResponse<UpdateStaffSalaryResponseDto>> updateStaffSalary(@Valid @RequestBody UpdateStaffSalaryRequestDto request, @AuthenticationPrincipal Users user) {
 
@@ -65,6 +69,7 @@ public class BranchController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','OWNER')")
     @PatchMapping("/update-manager-salary")
     public ResponseEntity<ApplicationResponse<UpdateManagerSalaryResponseDto>> updateManagerSalary(@Valid @RequestBody UpdateManagerSalaryRequestDto request, @AuthenticationPrincipal Users user) {
 
@@ -78,6 +83,7 @@ public class BranchController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','OWNER')")
     @DeleteMapping("/{branchId}")
     public ResponseEntity<ApplicationResponse<String>> deleteBranch(@PathVariable Long branchId, @AuthenticationPrincipal Users user) {
 

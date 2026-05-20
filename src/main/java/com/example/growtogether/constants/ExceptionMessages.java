@@ -20,6 +20,9 @@ public interface ExceptionMessages {
     String RESTAURANT_BRANCH_EXISTS = "Branches Of Restaurant Exits, First delete all the branches to delete the restaurant";
     String INVITATION_NOT_FOUND = "No Invitation Found";
     String RESTAURANT_BRANCH_NOT_FOUND = "Restaurant Branch Not Found";
+    String BRANCH_TABLE_NOT_FOUND = "No table found!!!";
+    String USER_LOGGED_OUT = "User Logged out Already!!!";
+
 
 
 

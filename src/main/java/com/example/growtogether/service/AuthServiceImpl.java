@@ -73,6 +73,10 @@ public class AuthServiceImpl implements AuthService{
         RefreshToken token = refreshTokenRepository.findByToken(refresh)
                 .orElseThrow(() -> new RefreshTokenNotValidException(ExceptionMessages.REFRESH_TOKEN_NOT_VALID));
 
+        if(Boolean.TRUE.equals(token.getBlackListed())){
+            throw new RefreshTokenNotValidException(ExceptionMessages.USER_LOGGED_OUT);
+        }
+
         Users user = token.getUser();
 
         if(jwtUtil.isRefreshTokenValid(token)){
@@ -182,6 +186,17 @@ public class AuthServiceImpl implements AuthService{
         }
 
         return null;
+    }
+
+    @Override
+    public String logoutUser(RegenerateAccessTokenDto token, Users user) {
+
+        RefreshToken refreshToken = refreshTokenRepository.findByToken(token.getRefreshToken())
+                        .orElseThrow(() -> new RefreshTokenNotValidException(ExceptionMessages.REFRESH_TOKEN_NOT_VALID));
+        refreshToken.setBlackListed(true);
+        refreshTokenRepository.save(refreshToken);
+
+        return "Logged out successfully";
     }
 
 

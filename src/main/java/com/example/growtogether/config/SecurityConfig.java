@@ -4,10 +4,14 @@ import com.example.growtogether.filter.JwtFilter;
 import com.example.growtogether.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -16,6 +20,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
+@EnableWebSecurity(debug = true)
+//@EnableMethodSecurity
 public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
@@ -26,9 +32,9 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable());
 
         http.authorizeHttpRequests(auth ->
-                auth.requestMatchers("/growtogether/v1/invitation").hasRole("ADMIN")
-                .requestMatchers("/growtogether/v1/restaurant/**").hasAnyRole("ADMIN", "OWNER")
-                        .anyRequest().permitAll()
+                auth.requestMatchers("/auth/login").permitAll()
+                .requestMatchers("/auth/register").permitAll()
+                        .anyRequest().authenticated()
                 );
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
@@ -36,6 +42,15 @@ public class SecurityConfig {
         return http.build();
 
     }
+
+/*    requestMatchers("/growtogether/v1/auth/refresh").hasAnyRole("ADMIN","OWNER","MANAGER", "STAFF_WAITER","STAFF_KITCHEN")
+                        .requestMatchers("/growtogether/v1/auth/logout").hasAnyRole("ADMIN","OWNER","MANAGER", "STAFF_WAITER","STAFF_KITCHEN")
+                        .requestMatchers(HttpMethod.POST,"/growtogether/v1/branch/").hasAnyRole("ADMIN","OWNER","MANAGER")
+                        .requestMatchers(HttpMethod.GET,"/growtogether/v1/branch/").hasAnyRole("ADMIN","OWNER")
+                        .requestMatchers("/growtogether/v1/branch/update-staff-salary").hasAnyRole("ADMIN","OWNER","MANAGER")
+                        .requestMatchers("/growtogether/v1/branch/update-manager-salary").hasAnyRole("ADMIN","OWNER")
+                        .requestMatchers(HttpMethod.DELETE,"/growtogether/v1/branch/**").hasAnyRole("ADMIN","OWNER")
+                        .requestMatchers("/growtogether/v1/invitation/**").hasAnyRole("ADMIN","OWNER","MANAGER")*/
 
 
     @Bean
