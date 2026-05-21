@@ -97,5 +97,4 @@ public class BranchController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
 }

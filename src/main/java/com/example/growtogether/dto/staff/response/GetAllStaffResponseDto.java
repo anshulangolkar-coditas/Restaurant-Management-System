@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class GetAllStaffResponseDto {
+public class GetAllStaffResponseDto implements GetAllGenericResponse{
 
     private Long staffId;
     private String fistName;

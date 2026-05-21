@@ -5,11 +5,9 @@ import com.example.growtogether.constants.Role;
 import com.example.growtogether.dto.restaurant.request.AddRestaurantRequestDto;
 import com.example.growtogether.dto.restaurant.request.DeleteRestaurantRequestDto;
 import com.example.growtogether.dto.restaurant.response.AddRestaurantResponseDto;
+import com.example.growtogether.dto.restaurant.response.GetAllRestaurantsResponse;
 import com.example.growtogether.dtomapping.restaurant.RestaurantMapping;
-import com.example.growtogether.entity.Owner;
-import com.example.growtogether.entity.OwnerRestaurant;
-import com.example.growtogether.entity.Restaurant;
-import com.example.growtogether.entity.Users;
+import com.example.growtogether.entity.*;
 import com.example.growtogether.exception.RestaurantBranchesExistsException;
 import com.example.growtogether.exception.RestaurantNotFoundException;
 import com.example.growtogether.exception.UserNotFoundException;
@@ -48,7 +46,7 @@ public class RestaurantServiceImpl implements RestaurantService {
                 .owner(owner)
                 .build());
 
-        return restaurantMapping.EntityToDto(savedRestaurant);
+        return restaurantMapping.entityToDto(savedRestaurant);
     }
 
     @Override
@@ -73,7 +71,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public List<AddRestaurantResponseDto> getAllRestaurants(int page, Users user) {
+    public List<GetAllRestaurantsResponse> getAllRestaurants(int page, Users user) {
 
         Pageable pageable = PageRequest.of(page, 8);
 
@@ -91,6 +89,8 @@ public class RestaurantServiceImpl implements RestaurantService {
                 .stream()
                 .map(OwnerRestaurant::getRestaurant)
                 .toList();
+
+        //List<RestaurantBranch> branchList = restaurants.
 
         return restaurantMapping.listOfRestaurants(restaurants);
     }

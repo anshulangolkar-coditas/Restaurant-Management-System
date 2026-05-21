@@ -3,7 +3,10 @@ package com.example.growtogether.dtomapping.restaurant;
 import com.example.growtogether.constants.RestaurantType;
 import com.example.growtogether.dto.restaurant.request.AddRestaurantRequestDto;
 import com.example.growtogether.dto.restaurant.response.AddRestaurantResponseDto;
+import com.example.growtogether.dto.restaurant.response.GetAllRestaurantBranch;
+import com.example.growtogether.dto.restaurant.response.GetAllRestaurantsResponse;
 import com.example.growtogether.entity.Restaurant;
+import com.example.growtogether.entity.RestaurantBranch;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +25,7 @@ public class RestaurantMapping {
                 .build();
     }
 
-    public AddRestaurantResponseDto EntityToDto(Restaurant restaurant){
+    public AddRestaurantResponseDto entityToDto(Restaurant restaurant){
         return AddRestaurantResponseDto.builder()
                 .restaurantId(restaurant.getRestaurantId())
                 .restaurantName(restaurant.getRestaurantName())
@@ -30,14 +33,35 @@ public class RestaurantMapping {
                 .build();
     }
 
-    public List<AddRestaurantResponseDto> listOfRestaurants(Page<Restaurant> restaurantList){
-        return restaurantList.stream()
-                .map(this::EntityToDto).toList();
+
+    public GetAllRestaurantBranch getAllRestaurantBranchToDto(RestaurantBranch branch){
+        return GetAllRestaurantBranch.builder()
+                .branchId(branch.getBranchId())
+                .branchName(branch.getBranchName())
+                .branchAddress(branch.getBranchAddress())
+                .contactNumber(branch.getContactNumber())
+                .numberOfTables(branch.getNumberOfTables())
+                .build();
     }
 
-    public List<AddRestaurantResponseDto> listOfRestaurants(List<Restaurant> restaurantList){
-        return restaurantList.stream()
-                .map(this::EntityToDto).toList();
+
+    public GetAllRestaurantsResponse getAllRestaurantsResponseToDto(Restaurant restaurant){
+        return GetAllRestaurantsResponse.builder()
+                .restaurantId(restaurant.getRestaurantId())
+                .restaurantName(restaurant.getRestaurantName())
+                .type(restaurant.getRestaurantType())
+                .branches(restaurant.getBranches().stream().map(this::getAllRestaurantBranchToDto).toList())
+                .build();
     }
 
+
+    public List<GetAllRestaurantsResponse> listOfRestaurants(Page<Restaurant> restaurantList){
+        return restaurantList.stream()
+                .map(this::getAllRestaurantsResponseToDto).toList();
+    }
+
+    public List<GetAllRestaurantsResponse> listOfRestaurants(List<Restaurant> restaurantList){
+        return restaurantList.stream()
+                .map(this::getAllRestaurantsResponseToDto).toList();
+    }
 }

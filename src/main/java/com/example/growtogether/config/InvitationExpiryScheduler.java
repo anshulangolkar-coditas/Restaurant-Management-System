@@ -16,7 +16,7 @@ public class InvitationExpiryScheduler {
 
     private final InvitationRepository invitationRepository;
 
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 600000)
     public void expireInvitations(){
 
         List<Invitation> invitationList = invitationRepository

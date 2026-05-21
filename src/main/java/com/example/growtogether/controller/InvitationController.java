@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/invitation")
 @RequiredArgsConstructor
-@PreAuthorize("hasAnyRole('ADMIN','OWNER')")
+@PreAuthorize("hasAnyRole('ADMIN','OWNER','MANAGER')")
 public class InvitationController {
 
     private final InvitationService invitationService;

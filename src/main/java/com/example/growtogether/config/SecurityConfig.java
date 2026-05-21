@@ -32,9 +32,14 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable());
 
         http.authorizeHttpRequests(auth ->
-                auth.requestMatchers("/auth/login").permitAll()
-                .requestMatchers("/auth/register").permitAll()
-                        .anyRequest().authenticated()
+                auth.requestMatchers("/auth/login","/auth/register","/auth/refresh").permitAll()
+                        .requestMatchers("/branch/**").authenticated()
+                        .requestMatchers("/auth/**").authenticated()
+                        .requestMatchers("/invitation/**").authenticated()
+                        .requestMatchers("/restaurant/**").authenticated()
+                        .requestMatchers("/branch/table/**").authenticated()
+                        .requestMatchers("/restaurant/branch/staff/**").authenticated()
+                        .anyRequest().permitAll()
                 );
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

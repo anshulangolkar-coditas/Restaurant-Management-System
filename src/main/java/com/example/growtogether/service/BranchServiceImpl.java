@@ -43,7 +43,7 @@ public class BranchServiceImpl  implements BranchService{
         Restaurant restaurant = restaurantRepository.findById(request.getRestaurantId())
                 .orElseThrow(() -> new RestaurantNotFoundException(ExceptionMessages.RESTAURANT_NOT_FOUND));
 
-        AddRestaurantResponseDto restaurantDto = restaurantMapping.EntityToDto(restaurant);
+        AddRestaurantResponseDto restaurantDto = restaurantMapping.entityToDto(restaurant);
 
         RestaurantBranch branch = restaurantBranchRepository.save(branchMapping.dtoToEntity(request, restaurant));
 
@@ -72,7 +72,7 @@ public class BranchServiceImpl  implements BranchService{
 
         Page<RestaurantBranch> branchList = restaurantBranchRepository.findAllByRestaurant(restaurant, pageable);
 
-        AddRestaurantResponseDto restaurantResponseDto = restaurantMapping.EntityToDto(restaurant);
+        AddRestaurantResponseDto restaurantResponseDto = restaurantMapping.entityToDto(restaurant);
 
         return branchMapping.listEntityToDto(branchList, restaurantResponseDto);
 

@@ -3,6 +3,7 @@ package com.example.growtogether.controller;
 import com.example.growtogether.dto.restaurant.request.AddRestaurantRequestDto;
 import com.example.growtogether.dto.restaurant.request.DeleteRestaurantRequestDto;
 import com.example.growtogether.dto.restaurant.response.AddRestaurantResponseDto;
+import com.example.growtogether.dto.restaurant.response.GetAllRestaurantsResponse;
 import com.example.growtogether.entity.Users;
 import com.example.growtogether.response.ApplicationResponse;
 import com.example.growtogether.service.RestaurantService;
@@ -53,16 +54,15 @@ public class RestaurantController {
 
     @PreAuthorize("hasAnyRole('ADMIN','OWNER')")
     @GetMapping("/")
-    public ResponseEntity<ApplicationResponse<List<AddRestaurantResponseDto>>> getAllRestaurants(@RequestParam int page, @AuthenticationPrincipal Users user) {
+    public ResponseEntity<ApplicationResponse<List<GetAllRestaurantsResponse>>> getAllRestaurants(@RequestParam int page, @AuthenticationPrincipal Users user) {
 
-        List<AddRestaurantResponseDto> restaurantList = restaurantService.getAllRestaurants(page, user);
+        List<GetAllRestaurantsResponse> restaurantList = restaurantService.getAllRestaurants(page, user);
 
-        ApplicationResponse<List<AddRestaurantResponseDto>> response = new ApplicationResponse<>(
+        ApplicationResponse<List<GetAllRestaurantsResponse>> response = new ApplicationResponse<>(
                 HttpStatus.OK.value(),
                 "Retrieved All Restaurants Successfully",
                 restaurantList
         );
-
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
